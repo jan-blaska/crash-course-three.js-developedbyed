@@ -4,14 +4,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // Scene
 const scene = new THREE.Scene();
 
-// Create our cube
-const geometry = new THREE.BoxGeometry( 5, 5, 5 ); 
+// Create our 3D model
+const geometry = new THREE.TorusKnotGeometry( 12, 3.4, 205, 20, 2, 3 ); 
 const material = new THREE.MeshStandardMaterial({ 
     color: 0x00ff83,
     roughness: 0.5,
 }); 
-const cube = new THREE.Mesh( geometry, material ); 
-scene.add( cube );
+const torus = new THREE.Mesh( geometry, material ); 
+scene.add( torus );
 
 // Sizes
 const sizes = {
@@ -20,13 +20,12 @@ const sizes = {
 }
 
 // Light
-const light = new THREE.AmbientLight(0xffffff, 1, 100);
-light.position.set( 0, 10, 10 );
+const light = new THREE.HemisphereLight(0xffffff, 1);
 scene.add( light );
 
 // Camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100);
-camera.position.z = 20;
+camera.position.z = 80;
 scene.add( camera );
 
 // Renderer
@@ -65,7 +64,7 @@ loop();
 
 // Timeline magiccc
 const tl = gsap.timeline({defaults: {duration: 2}})
-tl.fromTo(cube.scale, {z:0, x:0, y:0}, {z:1, x:1, y:1})
+tl.fromTo(torus.scale, {z:0, x:0, y:0}, {z:1, x:1, y:1})
 tl.fromTo('nav', {y: '-100%'}, {y: '0%'});
 tl.fromTo(".title", { opacity: 0}, {opacity: 1});
 
@@ -85,7 +84,7 @@ window.addEventListener('mousemove', (e) => {
         // Let´s animate
         let newColor = new THREE.Color(`rgb(${rgb.join(",")})`);
        /* new THREE.Color(`rgb(0,100,150)`);*/
-        gsap.to(cube.material.color, {
+        gsap.to(torus.material.color, {
             r: newColor.r,
             g: newColor.g,
             b: newColor.b,
